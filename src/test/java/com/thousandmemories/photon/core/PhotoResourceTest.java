@@ -40,7 +40,7 @@ public class PhotoResourceTest extends ResourceTest {
 
     @Override
     protected void setUpResources() throws Exception {
-        addResource(new PhotoResource(photoProvider));
+        addResource(new UnmappedPhotoResource(photoProvider));
     }
 
     @Test

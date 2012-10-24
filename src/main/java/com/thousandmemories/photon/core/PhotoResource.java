@@ -1,9 +1,5 @@
 package com.thousandmemories.photon.core;
 
-import com.yammer.dropwizard.jersey.caching.CacheControl;
-import com.yammer.dropwizard.logging.Log;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.annotation.Timed;
 import com.yammer.metrics.core.Timer;
 import com.yammer.metrics.core.TimerContext;
 
@@ -23,25 +19,13 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 
-@Path("/{name}")
 public class PhotoResource {
-    private static final Log LOG = Log.forClass(PhotoResource.class);
-    private static final Timer readTimer = Metrics.newTimer(PhotoResource.class, "read", TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
-
-
-    private final PhotoProvider photoProvider;
-
-    public PhotoResource(PhotoProvider photoProvider) {
-        this.photoProvider = photoProvider;
-    }
-
-    @GET
-    @Timed
-    @CacheControl(immutable = true)
-    public Response getPhoto(@PathParam("name") String name,
-                             @MatrixParam("w") Integer width,
-                             @MatrixParam("r") RotationParam rotateAngle,
-                             @MatrixParam("c") RectangleParam crop) throws Exception {
+    public Response getPhoto(PhotoProvider photoProvider,
+                             Timer readTimer,
+                             String name,
+                             Integer width,
+                             RotationParam rotateAngle,
+                             RectangleParam crop) throws Exception {
         InputStream resultStream;
 
         InputStream imageStream;
@@ -99,6 +83,5 @@ public class PhotoResource {
         return Response.
                 ok(resultStream, mimeType).
                 build();
-
     }
 }
