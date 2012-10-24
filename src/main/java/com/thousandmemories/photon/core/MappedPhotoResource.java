@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
 
-@Path("/{path}/{name}")
+@Path("/{path}/{name:.*}")
 public class MappedPhotoResource extends PhotoResource {
     private static final Log LOG = Log.forClass(MappedPhotoResource.class);
     private static final Timer readTimer = Metrics.newTimer(MappedPhotoResource.class, "read", TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
