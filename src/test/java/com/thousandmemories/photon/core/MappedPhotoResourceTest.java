@@ -41,4 +41,10 @@ public class MappedPhotoResourceTest extends ResourceTest {
         assertThat(response.getEntity(byte[].class), is(ByteStreams.toByteArray(getImage("mf.jpg"))));
         assertThat(response.getType().toString(), is("image/jpeg"));
     }
+
+    @Test
+    public void test404() throws Exception {
+        ClientResponse response = client().resource("/foo/mf.jpg").get(ClientResponse.class);
+        assertThat(response.getStatus(), is(404));
+    }
 }

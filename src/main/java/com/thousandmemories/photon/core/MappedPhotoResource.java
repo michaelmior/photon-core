@@ -34,7 +34,14 @@ public class MappedPhotoResource extends PhotoResource {
         String className = classPath + "." + Character.toUpperCase(path.charAt(0)) + path.substring(1) + "PhotoProvider";
 
         ClassLoader loader = ClassLoader.getSystemClassLoader();
-        PhotoProvider provider = (PhotoProvider) loader.loadClass(className).newInstance();
+
+        PhotoProvider provider = null;
+        try {
+            provider = (PhotoProvider) loader.loadClass(className).newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new WebApplicationException(404);
+        }
+
         return super.getPhoto(provider, this.readTimer, name, width, rotateAngle, crop);
     }
 }
